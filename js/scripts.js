@@ -304,6 +304,18 @@ function initMap() {
         });
     });
 
+    // Adatta la vista per mostrare tutti i segnaposti
+    map.fitBounds(bounds);
+
+    // Evita che il fitBounds imposti uno zoom troppo alto
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+        if (map.getZoom() > 15) map.setZoom(15);
+    });
+
+    // Sposta leggermente il centro verso sud per migliorare la visuale
+    var _center = bounds.getCenter();
+    map.setCenter({ lat: _center.lat() - 0.005, lng: _center.lng() });
+
     window.mapBounds = bounds;
     document.getElementById('zoom-map-btn').addEventListener('click', function() {
         map.fitBounds(window.mapBounds);
